@@ -22,8 +22,8 @@
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service",
-            "apiVersion": "2019-12-01",
-            "name": "[parameters('apimName')]",
+            "apiVersion": "2020-06-01-preview",
+            "name": "[format('apiservice{0}', uniqueString(resourceGroup().id))]",
             "location": "[parameters('location')]",
             "sku": {
                 "name": "Developer",
