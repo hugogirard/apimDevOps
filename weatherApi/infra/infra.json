@@ -21,7 +21,7 @@
               "capacity": 1
           },
           "properties": {
-              "name": "appServicePlan1"
+              "name": "[variables('appPlanName')]"
           }
       },
       {
