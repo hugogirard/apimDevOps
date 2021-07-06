@@ -1,0 +1,37 @@
+name: Deploy Azure APIM Core
+
+on:  
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  RESOURCE_GROUP_NAME: 'apim-core-rg'
+  LOCATION: 'eastus'
+  APINAME: 'apimcorehg'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+  
+    steps:      
+      - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Create Resource Group
+        run: |
+          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+          
+                
+      - name: Deploy Azure Resource Manager (ARM) Template
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./opsTeam/apim.json
+          parameters: location=${{ env.LOCATION}} apimName=${{ env.APIMNAME }} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
+      
