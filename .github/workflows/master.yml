@@ -40,7 +40,7 @@ jobs:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./opsTeam/master.json
-          parameters: apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
+          parameters: environmentValue='DEV' apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
   
   deploy-prod:
     needs: deploy-dev
@@ -70,4 +70,4 @@ jobs:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./opsTeam/master.json
-          parameters: apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}      
+          parameters: environmentValue='PROD' apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}      

@@ -32,7 +32,13 @@
             "metadata": {
                 "description": "The publisher name"
             }
-        }        
+        },
+        "environmentValue": {
+            "type": "string",
+            "metadata": {
+                "description": "The named value environment"
+            }
+        }
     },
     "functions": [],
     "variables": {
@@ -74,7 +80,26 @@
                     "ApimServiceName": { "value": "[variables('apimName')]"}
                 }
             }
-        }
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "namedValueTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','apimTemplate')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('repoBaseUrl'),'/namedValues.template.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "ApimServiceName": { "value": "[variables('apimName')]"},
+                    "environmentValue": { "value": "[parameters('environmentValue')]"}
+                }
+            }
+        }        
     ],
     "outputs": {}
 }
