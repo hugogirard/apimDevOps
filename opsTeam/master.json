@@ -50,7 +50,7 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "apimName": { "value": "[parameters('apimName')]" },
+                    "apimName": { "value": "[variables('apimName')]" },
                     "location": { "value": "[parameters('location')]"},
                     "publisherEmail": { "value": "[parameters('publisherEmail')]"},
                     "publisherName": { "value": "[parameters('publisherName')]"}
@@ -71,7 +71,7 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
-                    "ApimServiceName": { "value": "[parameters('apimName')]"}
+                    "ApimServiceName": { "value": "[variables('apimName')]"}
                 }
             }
         }
