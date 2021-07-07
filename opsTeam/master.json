@@ -1,0 +1,60 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "repoBaseUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "Base URL of the repository"
+            }
+        },
+        "location": {
+            "type": "string",
+            "defaultValue": "eastus",
+            "metadata": {
+                "description": "The location of all resources"
+            }
+        },
+        "apimName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the APIM"
+            }
+        },
+        "publisherEmail": {
+            "type": "string",
+            "metadata": {
+                "description": "The publisher email"
+            }
+        },
+        "publisherName": {
+            "type": "string",
+            "metadata": {
+                "description": "The publisher name"
+            }
+        }        
+    },
+    "functions": [],
+    "variables": {},
+    "resources": [
+        {
+            "name": "apimTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('repoBaseUrl'),'/apim.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": { "value": "[parameters('location')]"},
+                    "apimName": { "value": "[parameters('apimName')]"},
+                    "publisherEmail": { "value": "[parameters('publisherEmail')]"},
+                    "publisherName": { "value": "[parameters('publisherName')]"}
+                }
+            }
+        }
+    ],
+    "outputs": {}
+}

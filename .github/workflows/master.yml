@@ -10,6 +10,7 @@ env:
   RESOURCE_GROUP_NAME: 'apim-core-rg'
   LOCATION: 'eastus'
   APINAME: 'apimcorehg'
+  BASE_REPO_URL: 'https://github.com/hugogirard/apimDevOps'
 
 jobs:
   deploy:
@@ -33,6 +34,6 @@ jobs:
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ./opsTeam/apim.json
-          parameters: location=${{ env.LOCATION}} apimName=${{ env.APIMNAME }} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
+          template: ./opsTeam/master.json
+          parameters: repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} apimName=${{ env.APIMNAME }} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
       
