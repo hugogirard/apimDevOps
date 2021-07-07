@@ -94,5 +94,5 @@ jobs:
       - name: 'Deploy Azure WebApp'
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ needs.create-azure-resource.outputs.webAppName }}          
+          app-name: ${{ needs.create-azure-resource-dev.outputs.webAppName }}          
           package: artifact
