@@ -120,5 +120,10 @@
             }
         }        
     ],
-    "outputs": {}
+    "outputs": {
+        "apimName": {
+            "type": "string",
+            "value": "[variables('apimName')]"
+        }        
+    }
 }

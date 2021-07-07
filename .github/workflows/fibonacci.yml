@@ -125,6 +125,13 @@ jobs:
         with: 
           app-name: ${{ needs.create-azure-resource-dev.outputs.webAppName }}
 
+      # - name: Deploy API in APIM        
+      #   uses: Azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+      #     template: ./fibonacciApi/template/api.json
+      #     parameters: location=${{ env.LOCATION}}                    
+
   deploy-prod:        
     needs:             
       - deploy-dev
