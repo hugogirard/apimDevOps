@@ -33,6 +33,20 @@
                 "publisherEmail": "[parameters('publisherEmail')]",
                 "publisherName": "[parameters('publisherName')]"
             }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service",
+            "apiVersion": "2020-06-01-preview",
+            "name": "[format('apiservice-prod-{0}', uniqueString(resourceGroup().id))]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Developer",
+                "capacity": "1"
+            },
+            "properties": {
+                "publisherEmail": "[parameters('publisherEmail')]",
+                "publisherName": "[parameters('publisherName')]"
+            }            
         }
     ],
     "outputs": {}
