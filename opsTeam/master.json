@@ -99,6 +99,25 @@
                     "environmentValue": { "value": "[parameters('environmentValue')]"}
                 }
             }
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "globalPolicyTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','apimTemplate')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('repoBaseUrl'),'/global/global.policy.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "ApimServiceName": { "value": "[variables('apimName')]"},
+                    "BaseUrl": { "value": "[parameters('repoBaseUrl')]"}
+                }
+            }
         }        
     ],
     "outputs": {}

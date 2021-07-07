@@ -1,0 +1,12 @@
+<policies>
+    <inbound />
+    <backend>
+        <forward-request />
+    </backend>
+    <outbound>
+        <set-header name="Environment" exists-action="override">
+            <value>{{APIM-ENVIRONMENT}}</value>
+        </set-header>
+    </outbound>
+    <on-error />
+</policies>
