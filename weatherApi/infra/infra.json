@@ -8,7 +8,8 @@
     },
     "functions": [],
     "variables": {
-        "appPlanName": "[format('appplan-{0}', uniqueString(resourceGroup().id))]"
+        "appPlanName": "[format('appplan-{0}', uniqueString(resourceGroup().id))]",
+        "webAppName": "[format('webapp-{0}', uniqueString(resourceGroup().id))]"
     },
     "resources": [
       {
@@ -25,7 +26,7 @@
           }
       },
       {
-          "name": "webApp1",
+          "name": "[variables('webAppName')]",
           "type": "Microsoft.Web/sites",
           "apiVersion": "2018-11-01",
           "location": "[resourceGroup().location]",
@@ -33,7 +34,7 @@
               "[resourceId('Microsoft.Web/serverfarms', variables('appPlanName'))]"
           ],
           "properties": {
-              "name": "webApp1",
+              "name": "[variables('webAppName')]",
               "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appPlanName'))]",
               "siteConfig": {
                   "netFrameworkVersion": "v5.0",
