@@ -68,4 +68,4 @@ jobs:
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ needs.create-azure-resource.outputs.webAppName }}          
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/weatherApi'
