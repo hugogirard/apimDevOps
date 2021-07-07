@@ -43,6 +43,7 @@ jobs:
           parameters: apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
   
   deploy-prod:
+    needs: deploy-dev
     env:
       APIM_NAME: 'apiservice-prod-'
     
