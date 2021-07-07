@@ -7,12 +7,17 @@ on:
   workflow_dispatch:
 
 env:
-  RESOURCE_GROUP_NAME: 'apim-fibonacci-rg'
   LOCATION: 'eastus'
   AZURE_WEBAPP_PACKAGE_PATH: 'artifact'
 
 jobs:
-  create-azure-resource:
+  create-azure-resource-dev:
+    
+    env:
+      RESOURCE_GROUP_NAME: 'apim-fibonacci-rg'
+      
+    environment: DEV
+  
     runs-on: ubuntu-latest
     
     outputs:
@@ -39,9 +44,7 @@ jobs:
           template: ./fibonacciApi/infra/infra.json
           parameters: location=${{ env.LOCATION}}
   
-  deploy-api:    
-    needs: create-azure-resource
-
+  build-api:        
     runs-on: ubuntu-latest
     
     steps:
@@ -58,14 +61,38 @@ jobs:
           dotnet restore
           dotnet build --configuration Release
           dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/fibonacciApi'          
+          
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2.2.4
+        with:          
+          name: artifact        
+          path: './fibonacciApi/src/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/fibonacciApi'
+        
+  deploy-dev:        
+    needs: 
+      - build-api   
+      - create-azure-resource-dev
+    
+    environment: DEV
+    
+    runs-on: ubuntu-latest    
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v2.0.10
+        with:
+          # Artifact name
+          name: artifact
 
       - name: Azure Login
         uses: Azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}    
-          
+
       - name: 'Deploy Azure WebApp'
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ needs.create-azure-resource.outputs.webAppName }}          
-          package: './fibonacciApi/src/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/fibonacciApi'
+          package: artifact
