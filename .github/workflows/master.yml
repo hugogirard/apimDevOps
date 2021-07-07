@@ -9,7 +9,7 @@ on:
 env:
   RESOURCE_GROUP_NAME: 'apim-core-rg'
   LOCATION: 'eastus'
-  BASE_REPO_URL: 'https://github.com/hugogirard/apimDevOps/blob/main/opsTeam'
+  BASE_REPO_URL: 'https://raw.githubusercontent.com/hugogirard/apimDevOps/main/opsTeam/'
 
 jobs:
   deploy:
