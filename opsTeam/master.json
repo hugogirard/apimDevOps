@@ -15,12 +15,6 @@
                 "description": "The location of all resources"
             }
         },
-        "apimName": {
-            "type": "string",
-            "metadata": {
-                "description": "The name of the APIM"
-            }
-        },
         "publisherEmail": {
             "type": "string",
             "metadata": {
@@ -37,24 +31,23 @@
     "functions": [],
     "variables": {},
     "resources": [
-        // {
-        //     "name": "apimTemplate",
-        //     "type": "Microsoft.Resources/deployments",
-        //     "apiVersion": "2017-05-10",
-        //     "properties": {
-        //         "mode": "Incremental",
-        //         "templateLink": {
-        //             "uri": "[concat(parameters('repoBaseUrl'),'/apim.json')]",
-        //             "contentVersion": "1.0.0.0"
-        //         },
-        //         "parameters": {
-        //             "location": { "value": "[parameters('location')]"},
-        //             "apimName": { "value": "[parameters('apimName')]"},
-        //             "publisherEmail": { "value": "[parameters('publisherEmail')]"},
-        //             "publisherName": { "value": "[parameters('publisherName')]"}
-        //         }
-        //     }
-        // }
+        {
+            "apiVersion": "2017-05-10",
+            "name": "apimTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('repoBaseUrl'),'/apim.template.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "location": { "value": "[parameters('location')]"},
+                    "publisherEmail": { "value": "[parameters('publisherEmail')]"},
+                    "publisherName": { "value": "[parameters('publisherName')]"}
+                }
+            }
+        }
     ],
     "outputs": {}
 }
