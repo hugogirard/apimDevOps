@@ -8,6 +8,12 @@
                 "description": "Base URL of the repository"
             }
         },
+        "apimName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the APIM"
+            }
+        },
         "location": {
             "type": "string",
             "defaultValue": "eastus",
@@ -29,7 +35,9 @@
         }        
     },
     "functions": [],
-    "variables": {},
+    "variables": {
+        "apimName": "[concat(parameters('apimName'), uniqueString(resourceGroup().id))]"
+    },
     "resources": [
         {
             "apiVersion": "2020-10-01",
@@ -42,9 +50,28 @@
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
+                    "apimName": { "value": "[parameters('apimName')]" },
                     "location": { "value": "[parameters('location')]"},
                     "publisherEmail": { "value": "[parameters('publisherEmail')]"},
                     "publisherName": { "value": "[parameters('publisherName')]"}
+                }
+            }
+        },
+        {
+            "apiVersion": "2020-10-01",
+            "name": "productTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments','apimTemplate')]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(parameters('repoBaseUrl'),'/apim.products.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "ApimServiceName": { "value": "[parameters('apimName')]"}
                 }
             }
         }
