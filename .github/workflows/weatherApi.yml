@@ -9,11 +9,15 @@ on:
 env:
   RESOURCE_GROUP_NAME: 'apim-weather-rg'
   LOCATION: 'eastus'
+  AZURE_WEBAPP_PACKAGE_PATH: 'artifact'
 
 jobs:
   create-azure-resource:
     runs-on: ubuntu-latest
-  
+    
+    outputs:
+      webAppName: ${{ steps.armDeployment.outputs.webAppName }}
+
     steps:      
       - uses: actions/checkout@v2
 
@@ -25,13 +29,43 @@ jobs:
       - name: Create Resource Group
         run: |
           az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
-          
-                
+                          
       - name: Deploy Azure Resource Manager (ARM) Template
+        id: armDeployment
         uses: Azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./weatherApi/infra/infra.json
           parameters: location=${{ env.LOCATION}}
-      
+  
+  deploy-api:    
+    needs: create-azure-resource
+
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Dotnet 3.3.x
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.x'
+
+      - name: dotnet build and publish
+        working-directory: ./weatherApi/src
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/weatherApi'          
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}    
+          
+      - name: 'Deploy Azure WebApp'
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ needs.create-azure-resource.outputs.webAppName }}          
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'

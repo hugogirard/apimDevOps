@@ -48,5 +48,10 @@
           }
       }
     ],
-    "outputs": {}
+    "outputs": {
+        "webAppname": {
+            "type": "string",
+            "value": "[variables('webAppName')]"
+        }
+    }
 }
