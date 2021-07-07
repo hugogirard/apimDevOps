@@ -10,10 +10,15 @@ env:
   RESOURCE_GROUP_NAME: 'apim-core-rg'
   LOCATION: 'eastus'
   BASE_REPO_URL: 'https://raw.githubusercontent.com/hugogirard/apimDevOps/main/opsTeam/'
-  APIM_NAME: 'apiservice'
+
 
 jobs:
-  deploy:
+  deploy-dev:
+    env:
+      APIM_NAME: 'apiservice'
+    
+    environment: DEV
+
     runs-on: ubuntu-latest
   
     steps:      
@@ -36,4 +41,32 @@ jobs:
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./opsTeam/master.json
           parameters: apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
-      
+  
+  deploy-prod:
+    env:
+      APIM_NAME: 'apiservice-prod-'
+    
+    environment: PROD
+
+    runs-on: ubuntu-latest
+  
+    steps:      
+      - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Create Resource Group
+        run: |
+          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+          
+                
+      - name: Deploy Azure Resource Manager (ARM) Template
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./opsTeam/master.json
+          parameters: apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}      
