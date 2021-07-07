@@ -16,8 +16,6 @@ jobs:
     env:
       RESOURCE_GROUP_NAME: 'apim-fibonacci-rg'
       
-    environment: DEV
-  
     runs-on: ubuntu-latest
     
     outputs:
@@ -44,6 +42,37 @@ jobs:
           template: ./fibonacciApi/infra/infra.json
           parameters: location=${{ env.LOCATION}}
   
+  create-azure-resource-prod:
+    
+    env:
+      RESOURCE_GROUP_NAME: 'apim-fibonacci-prod-rg'
+            
+    runs-on: ubuntu-latest
+    
+    outputs:
+      webAppName: ${{ steps.armDeployment.outputs.webAppName }}
+
+    steps:      
+      - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Create Resource Group
+        run: |
+          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+                          
+      - name: Deploy Azure Resource Manager (ARM) Template
+        id: armDeployment
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./fibonacciApi/infra/infra.json
+          parameters: location=${{ env.LOCATION}}
+
   build-api:        
     runs-on: ubuntu-latest
     
@@ -95,3 +124,30 @@ jobs:
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ needs.create-azure-resource-dev.outputs.webAppName }}
+
+  deploy-prod:        
+    needs:             
+      - deploy-dev
+    
+    environment: prod
+    
+    runs-on: ubuntu-latest    
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v2.0.10
+        with:
+          # Artifact name
+          name: artifact
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}    
+
+      - name: 'Deploy Azure WebApp'
+        uses: azure/webapps-deploy@v2
+        with: 
+          app-name: ${{ needs.create-azure-resource-prod.outputs.webAppName }}          
