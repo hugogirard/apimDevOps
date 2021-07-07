@@ -12,7 +12,7 @@
     "resources": [
       {
         "properties": {
-          "value": "[concat(parameters('BaseUrl'), '/opsTeam/policy/global.xml')]",
+          "value": "[concat(parameters('BaseUrl'), '/policy/global.xml')]",
           "format": "rawxml-link"
         },
         "name": "[concat(parameters('ApimServiceName'), '/policy')]",

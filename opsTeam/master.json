@@ -110,7 +110,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('repoBaseUrl'),'/global/global.policy.json')]",
+                    "uri": "[concat(parameters('repoBaseUrl'),'/policy/global.policy.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
