@@ -37,24 +37,24 @@
     "functions": [],
     "variables": {},
     "resources": [
-        {
-            "name": "apimTemplate",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(parameters('repoBaseUrl'),'/apim.json')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "location": { "value": "[parameters('location')]"},
-                    "apimName": { "value": "[parameters('apimName')]"},
-                    "publisherEmail": { "value": "[parameters('publisherEmail')]"},
-                    "publisherName": { "value": "[parameters('publisherName')]"}
-                }
-            }
-        }
+        // {
+        //     "name": "apimTemplate",
+        //     "type": "Microsoft.Resources/deployments",
+        //     "apiVersion": "2017-05-10",
+        //     "properties": {
+        //         "mode": "Incremental",
+        //         "templateLink": {
+        //             "uri": "[concat(parameters('repoBaseUrl'),'/apim.json')]",
+        //             "contentVersion": "1.0.0.0"
+        //         },
+        //         "parameters": {
+        //             "location": { "value": "[parameters('location')]"},
+        //             "apimName": { "value": "[parameters('apimName')]"},
+        //             "publisherEmail": { "value": "[parameters('publisherEmail')]"},
+        //             "publisherName": { "value": "[parameters('publisherName')]"}
+        //         }
+        //     }
+        // }
     ],
     "outputs": {}
 }
