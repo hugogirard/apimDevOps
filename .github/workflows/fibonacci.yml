@@ -20,6 +20,7 @@ jobs:
     
     outputs:
       webAppName: ${{ steps.armDeployment.outputs.webAppName }}
+      webAppUrl: ${{ steps.armDeployment.outputs.url }}
 
     steps:      
       - uses: actions/checkout@v2
@@ -125,12 +126,12 @@ jobs:
         with: 
           app-name: ${{ needs.create-azure-resource-dev.outputs.webAppName }}
 
-      # - name: Deploy API in APIM        
-      #   uses: Azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-      #     template: ./fibonacciApi/template/api.json
-      #     parameters: location=${{ env.LOCATION}}                    
+      - name: Deploy API in APIM        
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          template: ./fibonacciApi/template/api.json
+          parameters: WebUrl=${{ needs.create-azure-resource-dev.outputs.webAppUrl }} location=${{ env.LOCATION}}                    
 
   deploy-prod:        
     needs:             

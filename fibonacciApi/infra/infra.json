@@ -52,6 +52,10 @@
         "webAppname": {
             "type": "string",
             "value": "[variables('webAppName')]"
-        }
+        },
+        "url": {
+            "type": "string",
+            "value": "[reference(resourceId('Microsoft.Web/sites', variables('webAppName'))).hostNames[0]]"
+        }        
     }
 }
