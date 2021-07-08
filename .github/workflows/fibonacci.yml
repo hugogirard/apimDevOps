@@ -142,7 +142,11 @@ jobs:
     needs:             
       - deploy-dev
       - create-azure-resource-prod
-    
+
+    env:
+      RESOURCE_GROUP_NAME: 'apim-core-rg'
+      APIM_NAME: 'apiservice-prod-kluntc2vtndh6'      
+
     environment: prod
     
     runs-on: ubuntu-latest    
@@ -164,4 +168,12 @@ jobs:
       - name: 'Deploy Azure WebApp'
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ needs.create-azure-resource-prod.outputs.webAppName }}          
+          app-name: ${{ needs.create-azure-resource-prod.outputs.webAppName }}   
+          
+      - name: Deploy API in APIM        
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./fibonacciApi/template/api.json
+          parameters: WebUrl=${{ needs.create-azure-resource-prod.outputs.webAppUrl }} ApimServiceName=${{ env.APIM_NAME}}               
