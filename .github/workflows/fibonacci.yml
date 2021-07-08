@@ -105,6 +105,7 @@ jobs:
     
     env:
       RESOURCE_GROUP_NAME: 'apim-fibonacci-rg'
+      APIM_NAME: 'apiservicekluntc2vtndh6'
 
     environment: DEV
     
@@ -135,7 +136,7 @@ jobs:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./fibonacciApi/template/api.json
-          parameters: WebUrl=${{ needs.create-azure-resource-dev.outputs.webAppUrl }} location=${{ env.LOCATION}}                    
+          parameters: WebUrl=${{ needs.create-azure-resource-dev.outputs.webAppUrl }} ApimServiceName=${{ env.APIM_NAME}}                    
 
   deploy-prod:        
     needs:             
