@@ -129,6 +129,10 @@ jobs:
         uses: azure/webapps-deploy@v2
         with: 
           app-name: ${{ needs.create-azure-resource-dev.outputs.webAppName }}
+      
+      - name: 'Print output'
+        run: |
+          echo ${{ needs.create-azure-resource-dev.outputs.webAppUrl }}
 
       - name: Deploy API in APIM        
         uses: Azure/arm-deploy@v1
