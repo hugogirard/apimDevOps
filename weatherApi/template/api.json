@@ -1,0 +1,59 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "ApimServiceName": {
+        "type": "string"
+      },
+      "WebUrl": {
+        "type": "string"
+      }
+    },
+    "resources": [
+        {
+            "properties": {
+                "authenticationSettings": {
+                "subscriptionKeyRequired": false
+                },
+                "subscriptionKeyParameterNames": {
+                "header": "Ocp-Apim-Subscription-Key",
+                "query": "subscription-key"
+                },
+                "apiRevision": "1",
+                "isCurrent": true,
+                "subscriptionRequired": true,
+                "displayName": "Weather API",
+                "serviceUrl": "[parameters('WebUrl')]",
+                "path": "weather",
+                "protocols": [
+                "https"
+                ]
+            },
+            "name": "[concat(parameters('ApimServiceName'), '/weather-api')]",
+            "type": "Microsoft.ApiManagement/service/apis",
+            "apiVersion": "2021-01-01-preview",
+            "dependsOn": []
+        },
+        {
+            "properties": {
+                "templateParameters": [],
+                "description": "",
+                "request": {
+                "queryParameters": [],
+                "headers": [],
+                "representations": []
+                },
+                "responses": [],
+                "displayName": "Get Weather",
+                "method": "GET",
+                "urlTemplate": "/api/weatherforecast"
+            },
+            "name": "[concat(parameters('ApimServiceName'), '/WeatherApi/get-weather')]",
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "apiVersion": "2021-01-01-preview",
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'WeatherApi')]"
+            ]
+        }        
+    ]
+  }
