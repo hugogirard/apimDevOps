@@ -103,6 +103,9 @@ jobs:
       - build-api   
       - create-azure-resource-dev
     
+    env:
+      RESOURCE_GROUP_NAME: 'apim-fibonacci-rg'
+
     environment: DEV
     
     runs-on: ubuntu-latest    
@@ -130,6 +133,7 @@ jobs:
         uses: Azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./fibonacciApi/template/api.json
           parameters: WebUrl=${{ needs.create-azure-resource-dev.outputs.webAppUrl }} location=${{ env.LOCATION}}                    
 
