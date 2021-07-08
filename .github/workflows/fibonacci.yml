@@ -132,7 +132,7 @@ jobs:
       
       - name: 'Print output'
         run: |
-          echo ${{ needs.create-azure-resource-dev.outputs.webAppUrl }}
+          echo 'https://${{ needs.create-azure-resource-dev.outputs.webAppUrl }}'
 
       - name: Deploy API in APIM        
         uses: Azure/arm-deploy@v1
@@ -140,7 +140,7 @@ jobs:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./fibonacciApi/template/api.json
-          parameters: WebUrl=${{ needs.create-azure-resource-dev.outputs.webAppUrl }} ApimServiceName=${{ env.APIM_NAME}}                    
+          parameters: WebUrl='https://${{ needs.create-azure-resource-dev.outputs.webAppUrl }}' ApimServiceName=${{ env.APIM_NAME}}                    
 
   deploy-prod:        
     needs:             
