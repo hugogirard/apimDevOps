@@ -102,6 +102,8 @@ jobs:
     needs: 
       - create-azure-resource-dev
       - build-api
+    
+    environment: DEV
 
     env:
       RESOURCE_GROUP_NAME: 'apim-core-rg'
@@ -139,6 +141,8 @@ jobs:
     needs: 
       - deploy-api-dev
       - create-azure-resource-prod
+    
+    environment: PROD
 
     env:
       RESOURCE_GROUP_NAME: 'apim-core-rg'
