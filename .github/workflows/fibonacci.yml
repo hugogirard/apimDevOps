@@ -104,7 +104,7 @@ jobs:
       - create-azure-resource-dev
     
     env:
-      RESOURCE_GROUP_NAME: 'apim-fibonacci-rg'
+      RESOURCE_GROUP_NAME: 'apim-core-rg'
       APIM_NAME: 'apiservicekluntc2vtndh6'
 
     environment: DEV
