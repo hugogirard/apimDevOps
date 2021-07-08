@@ -55,6 +55,12 @@
           "dependsOn": [
             "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'WeatherApi')]"
           ]
-        }       
+        },
+        {
+            "name": "[concat(parameters('ApimServiceName'), '/free-api/weatherapi')]",
+            "type": "Microsoft.ApiManagement/service/products/apis",
+            "apiVersion": "2021-01-01-preview",
+            "dependsOn": []
+        }            
     ]
   }
