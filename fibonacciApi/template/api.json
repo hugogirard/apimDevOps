@@ -23,6 +23,7 @@
           "isCurrent": true,
           "subscriptionRequired": true,
           "displayName": "Fibonacci",
+          "name": "Fibonacci",
           "format": "swagger-link-json",
           "value": "[concat(parameters('WebUrl'),'/swagger/v1/swagger.json')]",
           "serviceUrl": "[parameters('WebUrl')]",
@@ -35,17 +36,6 @@
         "type": "Microsoft.ApiManagement/service/apis",
         "apiVersion": "2021-01-01-preview",
         "dependsOn": []
-      },
-      {
-        "properties": {
-          "displayName": "Fibonacci"
-        },
-        "name": "[concat(parameters('ApimServiceName'), '/fibonacci/get-api-fibonacci/Fibonacci')]",
-        "type": "Microsoft.ApiManagement/service/apis/operations/tags",
-        "apiVersion": "2021-01-01-preview",
-        "dependsOn": [
-          "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'))]"
-        ]        
       }
     ]
   }
