@@ -24,8 +24,8 @@
           "subscriptionRequired": true,
           "displayName": "Fibonacci",
           "format": "swagger-link-json",
-          "value": "https://webapp-cc3dmjuomr7gs.azurewebsites.net/swagger/v1/swagger.json",
-          "serviceUrl": "https://webapp-cc3dmjuomr7gs.azurewebsites.net",
+          "value": "[concat(parameters('WebUrl'),'/swagger/v1/swagger.json')]",
+          "serviceUrl": "[parameters('WebUrl')]",
           "path": "Fibo",
           "protocols": [
             "https"

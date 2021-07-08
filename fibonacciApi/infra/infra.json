@@ -55,7 +55,7 @@
         },
         "url": {
             "type": "string",
-            "value": "[reference(resourceId('Microsoft.Web/sites', variables('webAppName'))).hostNames[0]]"
+            "value": "[format('https://{0}', reference(resourceId('Microsoft.Web/sites', variables('webAppName'))).hostNames[0])]"
         }        
     }
 }
