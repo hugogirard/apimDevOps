@@ -1,0 +1,36 @@
+name: Destroy Azure Resources
+
+on:
+  workflow_dispatch:
+
+env:
+  APIM_RESOURCE_GROUP: 'apim-core-rg'
+  FIBONACCI_API_RESOURCE_GROUP: 'apim-fibonacci-rg'
+  WEATHER_API_RESOURCE_GROUP: 'apim-weather-rg'
+
+jobs:
+  destroy-apim:
+    runs-on: ubuntu-latest
+
+    steps:      
+      - name: Destroy Resource Group
+        run: |
+          az group delete -n ${{ env.APIM_RESOURCE_GROUP}}
+          
+  destroy-fibonacci-api:
+    runs-on: ubuntu-latest
+
+    steps:      
+      - name: Destroy Resource Group
+        run: |
+          az group delete -n ${{ env.FIBONACCI_API_RESOURCE_GROUP}}
+
+
+  destroy-weather-api:
+    runs-on: ubuntu-latest
+
+    steps:      
+      - name: Destroy Resource Group
+        run: |
+          az group delete -n ${{ env.WEATHER_API_RESOURCE_GROUP}}
+
