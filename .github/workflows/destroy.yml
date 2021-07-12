@@ -15,7 +15,7 @@ jobs:
     steps:      
       - name: Destroy Resource Group
         run: |
-          az group delete -n ${{ env.APIM_RESOURCE_GROUP}}
+          az group delete -n ${{ env.APIM_RESOURCE_GROUP}} --yes
           
   destroy-fibonacci-api:
     runs-on: ubuntu-latest
@@ -23,7 +23,7 @@ jobs:
     steps:      
       - name: Destroy Resource Group
         run: |
-          az group delete -n ${{ env.FIBONACCI_API_RESOURCE_GROUP}}
+          az group delete -n ${{ env.FIBONACCI_API_RESOURCE_GROUP}} --yes
 
 
   destroy-weather-api:
@@ -32,5 +32,5 @@ jobs:
     steps:      
       - name: Destroy Resource Group
         run: |
-          az group delete -n ${{ env.WEATHER_API_RESOURCE_GROUP}}
+          az group delete -n ${{ env.WEATHER_API_RESOURCE_GROUP}} --yes
 
