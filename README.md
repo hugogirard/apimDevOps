@@ -77,3 +77,19 @@ Next you can deploy the Fibonacci or Weather API.
 Both of those Github Action are the same
 
 <img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/api.png?raw=true' />
+
+You see here the workflow have 5 jobs
+
+Job | Depend On | Description
+--- | --- | --- |
+Create-Azure-Resource-Dev | NA | This job create all the resource to deploy the API in Azure.  This ARM template can be move to the OpsTeam depending of your organization structure.
+Build-Api | NA | This job build the code and create the artefact to be deployed
+Create-Azure-Resource-Prod | NA | Same than the first Github Action but for production.
+Deploy Dev | Create-Azure-Resource-Dev and Build-API | Deploy the API in Dev Environment and configure the Dev APIM
+Deploy Prod | Create-Azure-Resource-Prod and Deploy-Dev | Deploy the API in production and configure the PROD APIM.  In your case the API cannot be deployed until is done in Dev and approved to go to Production.
+
+### Azure APIM DevOps Toolkit Creator
+
+If you refer to our provided toolkit (first link in the README), you have a tool call the extractor.  This help you to extract the ARM template for all your APIM or only one specific API.  Is recommended to use this at the beginning but when you are familiar with the ARM template you shouldn't need to extrator anymore.  
+
+Once you even gain more maturity I will recommend using a better tooling like [Bicep](https://github.com/Azure/bicep).
