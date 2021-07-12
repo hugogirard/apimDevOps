@@ -105,7 +105,8 @@
             "name": "globalPolicyTemplate",
             "type": "Microsoft.Resources/deployments",
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments','apimTemplate')]"
+                "[resourceId('Microsoft.Resources/deployments','apimTemplate')]",
+                "[resourceId('Microsoft.Resources/deployments','namedValueTemplate')]"
             ],
             "properties": {
                 "mode": "Incremental",
