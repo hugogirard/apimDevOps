@@ -1,4 +1,4 @@
-# Introduction
+# APIM DevOps
 
 This github provide an example how to do DevOps with Github for Azure API Management.  
 
@@ -41,3 +41,39 @@ Here we used Github action but any CI/CD tool is the same purpose.
 You have 4 pipelines but in fact 3 are important.
 
 <img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/actions.png?raw=true' />
+
+Github Action | Description
+--- | --- |
+Deploy Azure APIM Core | This pipeline deploy all APIMS with global settings.  Should be managed by the OpsTeam.
+Deploy Fibonacci API | This pipeline deploy the Fibonnaci API in Azure and configure it in APIM
+Deploy Weather API | This pipelie deploy the Weather API in Azure and Configure it in APIM.
+
+The Github **Deploy Azure APIM Core** contains two [environments](https://docs.github.com/en/actions/reference/environments), the production one requiered an approver.
+
+## How to use this Github
+
+Fork this Github repository
+
+Next you will need to create 5 Github Secrets
+
+Secret | Description
+--- | --- |
+AZURE_CREDENTIALS | This secret is the credential of the Service Principal used in the Github Action.  It's needed when running the Azure Login.  Refer here for more information https://github.com/marketplace/actions/azure-login#configure-deployment-credentials
+PA_TOKEN | Needed to run the Github Action that create secrets, for more information read https://github.com/gliech/create-github-secret-action.
+PUBLISHER_NAME | The name of the publisher of the APIM
+PUPLISHER_EMAIL | The email of the publisher
+SUBSCRIPTION_ID | The subscription ID where is deployed all the Azure Resources
+
+Be sure after to create two environment with those name
+
+<img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/env.png?raw=true' />
+
+In our case we put an approver for the **production** environment but this is up to you.
+
+Now you can run the Deploy Azure APIM Core, depending if you added an approver for the production environment you will need to approve to create the resource in production.
+
+Next you can deploy the Fibonacci or Weather API.
+
+Both of those Github Action are the same
+
+<img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/api.png?raw=true' />
