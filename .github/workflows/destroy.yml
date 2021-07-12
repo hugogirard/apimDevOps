@@ -11,7 +11,11 @@ env:
 jobs:
   destroy-apim:
     runs-on: ubuntu-latest
-
+    
+    needs:
+      - destroy-fibonacci-api
+      - destroy-weather-api
+      
     steps:      
     
       - name: Azure Login
