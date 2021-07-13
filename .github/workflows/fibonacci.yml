@@ -106,7 +106,7 @@ jobs:
     
     env:
       RESOURCE_GROUP_NAME: 'apim-core-rg'
-      APIM_NAME: 'apiservicekluntc2vtndh6'
+      APIM_NAME: ${{ secrets.APIM_DEV_NAME }}
 
     environment: DEV
     
@@ -145,7 +145,7 @@ jobs:
 
     env:
       RESOURCE_GROUP_NAME: 'apim-core-rg'
-      APIM_NAME: 'apiservice-prod-kluntc2vtndh6'      
+      APIM_NAME: ${{ secrets.APIM_PROD_NAME }}
 
     environment: prod
     

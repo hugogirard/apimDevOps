@@ -30,7 +30,7 @@ namespace src
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "src", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fibonacci API", Version = "v1" });
             });
         }
 
@@ -43,7 +43,7 @@ namespace src
             }
 
             app.UseSwagger(o => o.SerializeAsV2 = true);
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "src v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fibonacci API v1"));
 
             app.UseHttpsRedirection();
 
