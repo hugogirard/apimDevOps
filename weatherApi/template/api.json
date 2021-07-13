@@ -24,7 +24,7 @@
             "isCurrent": true,
             "subscriptionRequired": true,
             "displayName": "WeatherApi",
-            "serviceUrl": "https://webapp-tiwp3dtt4njqs.azurewebsites.net",
+            "serviceUrl": "[parameters('WebUrl')]",
             "path": "weather",
             "protocols": [
               "https"
