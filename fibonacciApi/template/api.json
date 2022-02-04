@@ -19,7 +19,7 @@
             "header": "Ocp-Apim-Subscription-Key",
             "query": "subscription-key"
           },
-          "apiRevision": "1",
+          "apiRevision": "2",
           "isCurrent": true,
           "subscriptionRequired": true,
           "displayName": "Fibonacci",
