@@ -6,7 +6,9 @@ on:
 env:
   APIM_RESOURCE_GROUP: 'apim-core-rg'
   FIBONACCI_API_RESOURCE_GROUP: 'apim-fibonacci-rg'
+  FIBONACCI_API_RESOURCE_GROUP_PROD: 'apim-fibonacci-prod-rg'
   WEATHER_API_RESOURCE_GROUP: 'apim-weather-rg'
+  WEATHER_API_RESOURCE_GROUP_PROD: 'apim-weather-prod-rg'
 
 jobs:
   destroy-apim:
@@ -40,6 +42,7 @@ jobs:
       - name: Destroy Resource Group
         run: |
           az group delete -n ${{ env.FIBONACCI_API_RESOURCE_GROUP}} --yes
+          az group delete -n ${{ env.FIBONACCI_API_RESOURCE_GROUP_PROD}} --yes
 
 
   destroy-weather-api:
@@ -55,4 +58,5 @@ jobs:
       - name: Destroy Resource Group
         run: |
           az group delete -n ${{ env.WEATHER_API_RESOURCE_GROUP}} --yes
+          az group delete -n ${{ env.WEATHER_API_RESOURCE_GROUP_PROD}} --yes
 
