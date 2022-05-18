@@ -54,7 +54,9 @@ jobs:
           pa_token: ${{ secrets.PA_TOKEN }}                     
   
   create-azure-resource-prod:
-    
+    needs:             
+      - create-azure-resource-dev   
+      
     env:
       RESOURCE_GROUP_NAME: 'apim-fibonacci-prod-rg'
             
