@@ -23,7 +23,7 @@
             "apiRevision": "1",
             "isCurrent": true,
             "subscriptionRequired": true,
-            "displayName": "WeatherApi",
+            "displayName": "WeatherApi Canada",
             "serviceUrl": "[parameters('WebUrl')]",
             "path": "weather",
             "protocols": [
