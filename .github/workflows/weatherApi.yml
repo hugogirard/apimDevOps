@@ -11,68 +11,68 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: 'artifact'
 
 jobs:
-  create-azure-resource-dev:
+  # create-azure-resource-dev:
 
-    env:
-      RESOURCE_GROUP_NAME: 'apim-weather-rg'
+  #   env:
+  #     RESOURCE_GROUP_NAME: 'apim-weather-rg'
 
-    runs-on: ubuntu-latest
+  #   runs-on: ubuntu-latest
     
-    outputs:
-      webAppName: ${{ steps.armDeployment.outputs.webAppName }}
-      webAppUrl: ${{ steps.armDeployment.outputs.url }}      
+  #   outputs:
+  #     webAppName: ${{ steps.armDeployment.outputs.webAppName }}
+  #     webAppUrl: ${{ steps.armDeployment.outputs.url }}      
 
-    steps:      
-      - uses: actions/checkout@v2
+  #   steps:      
+  #     - uses: actions/checkout@v2
 
-      - name: Azure Login
-        uses: Azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+  #     - name: Azure Login
+  #       uses: Azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
           
-      - name: Create Resource Group
-        run: |
-          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+  #     - name: Create Resource Group
+  #       run: |
+  #         az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
                           
-      - name: Deploy Azure Resource Manager (ARM) Template
-        id: armDeployment
-        uses: Azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ./weatherApi/infra/infra.json
-          parameters: location=${{ env.LOCATION}}
+  #     - name: Deploy Azure Resource Manager (ARM) Template
+  #       id: armDeployment
+  #       uses: Azure/arm-deploy@v1
+  #       with:
+  #         subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+  #         resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+  #         template: ./weatherApi/infra/infra.json
+  #         parameters: location=${{ env.LOCATION}}
   
-  create-azure-resource-prod:
-    runs-on: ubuntu-latest
+  # create-azure-resource-prod:
+  #   runs-on: ubuntu-latest
     
-    env:
-      RESOURCE_GROUP_NAME: 'apim-weather-prod-rg'
+  #   env:
+  #     RESOURCE_GROUP_NAME: 'apim-weather-prod-rg'
 
-    outputs:
-      webAppName: ${{ steps.armDeployment.outputs.webAppName }}
-      webAppUrl: ${{ steps.armDeployment.outputs.url }}      
+  #   outputs:
+  #     webAppName: ${{ steps.armDeployment.outputs.webAppName }}
+  #     webAppUrl: ${{ steps.armDeployment.outputs.url }}      
 
-    steps:      
-      - uses: actions/checkout@v2
+  #   steps:      
+  #     - uses: actions/checkout@v2
 
-      - name: Azure Login
-        uses: Azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+  #     - name: Azure Login
+  #       uses: Azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
           
-      - name: Create Resource Group
-        run: |
-          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+  #     - name: Create Resource Group
+  #       run: |
+  #         az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
                           
-      - name: Deploy Azure Resource Manager (ARM) Template
-        id: armDeployment
-        uses: Azure/arm-deploy@v1
-        with:
-          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ./weatherApi/infra/infra.json
-          parameters: location=${{ env.LOCATION}}
+  #     - name: Deploy Azure Resource Manager (ARM) Template
+  #       id: armDeployment
+  #       uses: Azure/arm-deploy@v1
+  #       with:
+  #         subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+  #         resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+  #         template: ./weatherApi/infra/infra.json
+  #         parameters: location=${{ env.LOCATION}}
 
   build-api:        
     runs-on: ubuntu-latest
@@ -100,7 +100,6 @@ jobs:
 
   deploy-api-dev:    
     needs: 
-      - create-azure-resource-dev
       - build-api
     
     environment: DEV
@@ -127,7 +126,7 @@ jobs:
       - name: 'Deploy Azure WebApp'
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ needs.create-azure-resource-dev.outputs.webAppName }}
+          app-name: ${{ secrets.WEBAPP_WEATHERAPI_NAME_DEV }}
 
       - name: Deploy API in APIM        
         uses: Azure/arm-deploy@v1
@@ -135,12 +134,11 @@ jobs:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./weatherApi/template/api.json
-          parameters: WebUrl=${{ needs.create-azure-resource-dev.outputs.webAppUrl }} ApimServiceName=${{ env.APIM_NAME}}   
+          parameters: WebUrl=${{ secrets.WEBAPP_WEATHERAPI_URL_DEV }} ApimServiceName=${{ env.APIM_NAME}}   
 
   deploy-api-prod:    
     needs: 
       - deploy-api-dev
-      - create-azure-resource-prod
     
     environment: PROD
 
@@ -166,7 +164,7 @@ jobs:
       - name: 'Deploy Azure WebApp'
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ needs.create-azure-resource-prod.outputs.webAppName }}
+          app-name: ${{ secrets.WEBAPP_WEATHERAPI_NAME_PROD }}
 
       - name: Deploy API in APIM        
         uses: Azure/arm-deploy@v1
@@ -174,4 +172,4 @@ jobs:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./weatherApi/template/api.json
-          parameters: WebUrl=${{ needs.create-azure-resource-prod.outputs.webAppUrl }} ApimServiceName=${{ env.APIM_NAME}}                      
+          parameters: WebUrl=${{ secrets.WEBAPP_WEATHERAPI_URL_PROD }} ApimServiceName=${{ env.APIM_NAME}}                      
