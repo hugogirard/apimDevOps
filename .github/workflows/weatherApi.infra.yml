@@ -1,0 +1,98 @@
+name: Deploy Infra Weather API
+
+on:  
+  # push:
+  #   paths:
+  #     - 'weatherApi/**'
+  workflow_dispatch:
+
+env:
+  LOCATION: 'eastus'
+  AZURE_WEBAPP_PACKAGE_PATH: 'artifact'
+
+jobs:
+  create-azure-resource-dev:
+
+    env:
+      RESOURCE_GROUP_NAME: 'apim-weather-rg'
+
+    runs-on: ubuntu-latest
+      
+    steps:      
+      - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Create Resource Group
+        run: |
+          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+                          
+      - name: Deploy Azure Resource Manager (ARM) Template
+        id: armDeployment
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./weatherApi/infra/infra.json
+          parameters: location=${{ env.LOCATION}}
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Web App Name WEATHERAPI Dev
+        with:
+          name: WEBAPP_WEATHERAPI_NAME_DEV
+          value: ${{ steps.armDeployment.outputs.webAppName }}
+          pa_token: ${{ secrets.PA_TOKEN }}
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Web App URL WEATHERAPI Dev
+        with:
+          name: WEBAPP_WEATHERAPI_URL_DEV
+          value: ${{ steps.armDeployment.outputs.url }}
+          pa_token: ${{ secrets.PA_TOKEN }}                     
+  
+  create-azure-resource-prod:
+    needs:
+      - create-azure-resource-dev
+    
+    runs-on: ubuntu-latest
+    
+    env:
+      RESOURCE_GROUP_NAME: 'apim-weather-prod-rg'
+
+    steps:      
+      - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Create Resource Group
+        run: |
+          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+                          
+      - name: Deploy Azure Resource Manager (ARM) Template
+        id: armDeployment
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./weatherApi/infra/infra.json
+          parameters: location=${{ env.LOCATION}}
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Web App Name WEATHERAPI PROD
+        with:
+          name: WEBAPP_WEATHERAPI_NAME_PROD
+          value: ${{ steps.armDeployment.outputs.webAppName }}
+          pa_token: ${{ secrets.PA_TOKEN }}
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Web App URL WEATHERAPI PROD
+        with:
+          name: WEBAPP_WEATHERAPI_URL_PROD
+          value: ${{ steps.armDeployment.outputs.url }}
+          pa_token: ${{ secrets.PA_TOKEN }}                               
