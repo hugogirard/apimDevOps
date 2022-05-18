@@ -103,7 +103,7 @@ jobs:
       - name: 'Deploy Azure WebApp'
         uses: azure/webapps-deploy@v2
         with: 
-          app-name: ${{ secrets.secrets.WEBAPP_FIBONACCI_NAME_PROD }}   
+          app-name: ${{ secrets.WEBAPP_FIBONACCI_NAME_PROD }}   
           
       - name: Deploy API in APIM        
         uses: Azure/arm-deploy@v1
