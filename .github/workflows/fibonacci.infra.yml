@@ -3,7 +3,7 @@ name: Deploy Infra Fibonacci API
 on:  
   push:
     paths:
-      - 'fibonacciApi/**'
+      - 'fibonacciApi/infra/**'
   workflow_dispatch:
 
 env:
