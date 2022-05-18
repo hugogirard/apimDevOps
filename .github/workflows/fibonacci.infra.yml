@@ -1,0 +1,97 @@
+name: Deploy Infra Fibonacci API
+
+on:  
+  push:
+    paths:
+      - 'fibonacciApi/**'
+  workflow_dispatch:
+
+env:
+  LOCATION: 'eastus'
+  AZURE_WEBAPP_PACKAGE_PATH: 'artifact'
+
+jobs:
+  create-azure-resource-dev:
+    
+    env:
+      RESOURCE_GROUP_NAME: 'apim-fibonacci-rg'
+      
+    runs-on: ubuntu-latest
+    
+    steps:      
+      - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Create Resource Group
+        run: |
+          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+                          
+      - name: Deploy Azure Resource Manager (ARM) Template
+        id: armDeployment
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./fibonacciApi/infra/infra.json
+          parameters: location=${{ env.LOCATION}}
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Web App Name Fibonacci Dev
+        with:
+          name: WEBAPP_FIBONACCI_NAME_DEV
+          value: ${{ steps.armDeployment.outputs.webAppName }}
+          pa_token: ${{ secrets.PA_TOKEN }}
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Web App URL Fibonacci Dev
+        with:
+          name: WEBAPP_FIBONACCI_URL_DEV
+          value: ${{ steps.armDeployment.outputs.url }}
+          pa_token: ${{ secrets.PA_TOKEN }}                     
+  
+  create-azure-resource-prod:
+    
+    env:
+      RESOURCE_GROUP_NAME: 'apim-fibonacci-prod-rg'
+            
+    runs-on: ubuntu-latest
+          
+    steps:      
+      - uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          
+      - name: Create Resource Group
+        run: |
+          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+                          
+      - name: Deploy Azure Resource Manager (ARM) Template
+        id: armDeployment
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./fibonacciApi/infra/infra.json
+          parameters: location=${{ env.LOCATION}}
+
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Web App Name Fibonacci Prod
+        with:
+          name: WEBAPP_FIBONACCI_NAME_PROD
+          value: ${{ steps.armDeployment.outputs.webAppName }}
+          pa_token: ${{ secrets.PA_TOKEN }}
+
+      - uses: gliech/create-github-secret-action@v1
+        name: Write Web App URL Fibonacci Prod
+        with:
+          name: WEBAPP_FIBONACCI_URL_PROD
+          value: ${{ steps.armDeployment.outputs.url }}
+          pa_token: ${{ secrets.PA_TOKEN }}              
