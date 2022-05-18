@@ -38,15 +38,18 @@ weatherApi | Contains the source of the Weather API and the ARM template to conf
 
 Here we used Github action but any CI/CD tool is the same purpose.
 
-You have 4 pipelines but in fact 3 are important.
+You have 6 pipelines.
 
 <img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/actions.png?raw=true' />
 
 Github Action | Description
 --- | --- |
 Deploy Azure APIM Core | This pipeline deploy all APIMS with global settings.  Should be managed by the OpsTeam.
+Deploy Infra Fibonacci API | This pipeline deploy the infra (web app) for the Fibonacci API
 Deploy Fibonacci API | This pipeline deploy the Fibonnaci API in Azure and configure it in APIM
+Deploy Infra Weather API | This pipeline deploy the infra (web app) for the Weather API
 Deploy Weather API | This pipelie deploy the Weather API in Azure and Configure it in APIM.
+Destroy Azure Resources | This pipeline destroy all the resources created in this demo in Azure
 
 The Github **Deploy Azure APIM Core** contains two [environments](https://docs.github.com/en/actions/reference/environments), the production one requiered an approver.
 
@@ -54,7 +57,7 @@ The Github **Deploy Azure APIM Core** contains two [environments](https://docs.g
 
 Fork this Github repository
 
-Next you will need to create 5 Github Secrets
+Next you will need to create 6 Github Secrets
 
 Secret | Description
 --- | --- |
@@ -63,6 +66,8 @@ PA_TOKEN | Needed to run the Github Action that create secrets, for more informa
 PUBLISHER_NAME | The name of the publisher of the APIM
 PUPLISHER_EMAIL | The email of the publisher
 SUBSCRIPTION_ID | The subscription ID where is deployed all the Azure Resources
+PA_TOKEN | Needed to write Github Secrets after the infra pipeline is done executed.  For more information read https://github.com/gliech/create-github-secret-action#pa_token
+
 
 Be sure after to create two environment with those name
 
@@ -72,21 +77,9 @@ In our case we put an approver for the **production** environment but this is up
 
 Now you can run the Deploy Azure APIM Core, depending if you added an approver for the production environment you will need to approve to create the resource in production.
 
-Next you can deploy the Fibonacci or Weather API.
+Once this is done run the Github Action **Deploy Infra Fibonacci API** and **Deploy Infra Weather API**.  Once this is done, all web apps for both environment will be created.
 
-Both of those Github Action are the same
-
-<img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/api.png?raw=true' />
-
-You see here the workflow have 5 jobs
-
-Job | Depend On | Description
---- | --- | --- |
-Create-Azure-Resource-Dev | NA | This job create all the resource to deploy the API in Azure.  This ARM template can be move to the OpsTeam depending of your organization structure.
-Build-Api | NA | This job build the code and create the artefact to be deployed
-Create-Azure-Resource-Prod | NA | Same than the first Github Action but for production.
-Deploy Dev | Create-Azure-Resource-Dev and Build-API | Deploy the API in Dev Environment and configure the Dev APIM
-Deploy Prod | Create-Azure-Resource-Prod and Deploy-Dev | Deploy the API in production and configure the PROD APIM.  In your case the API cannot be deployed until is done in Dev and approved to go to Production.
+Next you can deploy the APIs running **Deploy Fibonnaci API** and **Deploy Weather API**.
 
 ### Azure APIM DevOps Toolkit Creator
 
