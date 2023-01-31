@@ -1,4 +1,4 @@
-name: Deploy Azure APIM Core
+name: Deploy Azure APIM
 
 on:  
   push:
@@ -6,8 +6,7 @@ on:
       - 'opsTeam/**'
   workflow_dispatch:
 
-env:
-  RESOURCE_GROUP_NAME: 'apim-core-rg'
+env:  
   LOCATION: 'eastus'
   BASE_REPO_URL: 'https://raw.githubusercontent.com/hugogirard/apimDevOps/main/opsTeam/'
 
@@ -15,7 +14,7 @@ env:
 jobs:
   deploy-dev:
     env:
-      APIM_NAME: 'apiservice'
+      RESOURCE_GROUP_NAME: 'rg-apim-bicep-dev'
     
     environment: DEV
 
@@ -28,31 +27,25 @@ jobs:
         uses: Azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-      - name: Create Resource Group
-        run: |
-          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
-          
-                
+                          
       - name: Deploy Azure Resource Manager (ARM) Template
         id: deployAzRes
         uses: Azure/arm-deploy@v1
         with:
-          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ./opsTeam/master.json
-          parameters: environmentValue=DEV apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}          
+          template: ./opsTeam/master.bicep
+          parameters: environmentValue=dev rgName=${{ env.RESOURCE_GROUP_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }} location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
 
       - uses: gliech/create-github-secret-action@v1
         with:
           name: APIM_DEV_NAME
-          value: ${{ steps.deployAzRes.outputs.apimName }}
+          value: ${{ steps.deployAzRes.outputs.apiManegementName }}
           pa_token: ${{ secrets.PA_TOKEN }}             
   
   deploy-prod:
     needs: deploy-dev
     env:
-      APIM_NAME: 'apiservice-prod-'
+      RESOURCE_GROUP_NAME: 'rg-apim-bicep-prod'
     
     environment: PROD
 
@@ -65,12 +58,7 @@ jobs:
         uses: Azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-      - name: Create Resource Group
-        run: |
-          az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
-          
-                
+                                
       - name: Deploy Azure Resource Manager (ARM) Template
         id: deployAzRes
         uses: Azure/arm-deploy@v1
@@ -78,10 +66,10 @@ jobs:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
           template: ./opsTeam/master.json
-          parameters: environmentValue=PROD apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}      
+          parameters: environmentValue=prod rgName=${{ env.RESOURCE_GROUP_NAME }} apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}      
 
       - uses: gliech/create-github-secret-action@v1
         with:
           name: APIM_PROD_NAME
-          value: ${{ steps.deployAzRes.outputs.apimName }}
+          value: ${{ steps.deployAzRes.outputs.apiManegementName }}
           pa_token: ${{ secrets.PA_TOKEN }}                
