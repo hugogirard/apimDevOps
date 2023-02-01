@@ -25,8 +25,9 @@ resource webAppName 'Microsoft.Web/sites@2022-03-01' = {
           value: 'dotnet'
         }
       ]
+      alwaysOn: true
     }
-    httpsOnly: true
+    httpsOnly: true      
   }
 }
 

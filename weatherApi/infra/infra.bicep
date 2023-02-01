@@ -25,6 +25,7 @@ resource web 'Microsoft.Web/sites@2018-11-01' = {
           value: 'dotnet'
         }
       ]
+      alwaysOn: true
     }
   }
 }

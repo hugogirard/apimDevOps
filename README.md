@@ -2,9 +2,17 @@
 
 This github provide an example how to do DevOps with Github for Azure API Management.  
 
-One good implementation is described [here](https://github.com/Azure/azure-api-management-devops-resource-kit)
+Keep in mind, their is none one solution only to achieve this, this is one example using Bicep.  The same can be accomplished with Terraform or other Open Source tools provided by Microsoft.
 
-This sample will provide another organization structure that you can use to implement DevOps when you have multiples **git** repositories.
+DevOps can be done in multiple way, Microsoft provides some recommendation [here](https://learn.microsoft.com/en-us/azure/api-management/devops-api-development-templates).
+
+The proper flow of API in a DevOps world will be this one below.
+
+![devops](https://learn.microsoft.com/en-us/azure/api-management/media/devops-api-development-templates/api-management-cicd-flow.png)
+
+You create your API using OpenAPI specification, someone review your APIs and once everything is approved you publish it to production.
+
+This sample will provide an organization structure that you can use to implement DevOps when you have multiples **git** repositories.
 
 Suppose you have an organization with this structure.
 
@@ -21,9 +29,17 @@ This can include all the shared configuration in the organization for APIM like:
   <li>Global Policy</li>
 </ul>
 
-Each teams that develop APIs will have their own dedicated Git repository.  Doing so they can only modify their own set of API and be independant of other teams.
+Each teams that develop APIs will have their own dedicated Git repository.  Doing so, they can only modify their own set of APIs and be independant of other teams.
 
-This Git repository represent this kind of structure.  We use folder in this case but the opsTeam represent the Git related to the Ops Team, fibonnaciApi a dev team working on this api and weatherApi another API team.
+This Git repository represent this kind of structure.  We use folder in this case (in real world scenario you will have multiple Git). In this case we have 3 folder:
+
+<ul>
+  <li>opsTeam (Ops Cloud Team)</li>
+  <li>fibonacciApi (The dev team of the fibonacci API)</li>
+  <li>weatherApi (The dev team of the weather API) </li>
+</ul>
+
+Those 3 folders represent like 3 differents git repository.
 
 <img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/folder.png?raw=true' />
 
@@ -73,18 +89,15 @@ Be sure after to create two environment with those name
 
 <img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/env.png?raw=true' />
 
-In our case we put an approver for the **production** environment but this is up to you.
+But an approver for the **PROD** environment.
 
-Now you can run the Deploy Azure APIM Core, depending if you added an approver for the production environment you will need to approve to create the resource in production.
+Now you can run the Deploy Azure APIM Core, will need to approve to create the resource in production.
 
 Once this is done run the Github Action **Deploy Infra Fibonacci API** and **Deploy Infra Weather API**.  Once this is done, all web apps for both environment will be created.
 
 Next you can deploy the APIs running **Deploy Fibonnaci API** and **Deploy Weather API**.
 
-### Azure APIM DevOps Toolkit Creator
+### Resources
 
-If you refer to our provided toolkit (first link in the README), you have a tool call the extractor.  This help you to extract the ARM template for all your APIM or only one specific API.  Is recommended to use this at the beginning but when you are familiar with the ARM template you shouldn't need to extrator anymore.  
 
-Once you even gain more maturity I will recommend using a better tooling like [Bicep](https://github.com/Azure/bicep).
-
-https://techcommunity.microsoft.com/t5/azure-developer-community-blog/automate-your-api-deployments-with-azure-api-management-and/ba-p/3682278
+Here a great [article](https://techcommunity.microsoft.com/t5/azure-developer-community-blog/automate-your-api-deployments-with-azure-api-management-and/ba-p/3682278) related to DevOps with Azure Api Management.
