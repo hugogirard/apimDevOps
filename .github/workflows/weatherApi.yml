@@ -70,7 +70,7 @@ jobs:
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ./weatherApi/template/api.json
+          template: ./weatherApi/template/api.bicep
           parameters: WebUrl=${{ secrets.WEBAPP_WEATHERAPI_URL_DEV }} ApimServiceName=${{ env.APIM_NAME}}   
 
   deploy-api-prod:    
@@ -108,5 +108,5 @@ jobs:
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ./weatherApi/template/api.json
+          template: ./weatherApi/template/api.bicep
           parameters: WebUrl=${{ secrets.WEBAPP_WEATHERAPI_URL_PROD }} ApimServiceName=${{ env.APIM_NAME}}                      
