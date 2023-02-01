@@ -21,18 +21,20 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:      
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Azure Login
         uses: Azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
                           
-      - name: Deploy Azure Resource Manager (ARM) Template
+      - name: Deploy Azure Resource Manager (Bicep) Template
         id: deployAzRes
         uses: Azure/arm-deploy@v1
         with:
-          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}          
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}    
+          scope: subscription      
+          region: ${{ env.LOCATION }}
           template: ./opsTeam/master.bicep
           parameters: environmentValue=dev rgName=${{ env.RESOURCE_GROUP_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }} location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}
 
@@ -52,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
   
     steps:      
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Azure Login
         uses: Azure/login@v1
@@ -64,7 +66,8 @@ jobs:
         uses: Azure/arm-deploy@v1
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          scope: subscription      
+          region: ${{ env.LOCATION }}
           template: ./opsTeam/master.json
           parameters: environmentValue=prod rgName=${{ env.RESOURCE_GROUP_NAME }} apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}      
 
