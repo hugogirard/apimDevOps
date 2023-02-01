@@ -11,69 +11,6 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: 'artifact'
 
 jobs:
-  # create-azure-resource-dev:
-
-  #   env:
-  #     RESOURCE_GROUP_NAME: 'apim-weather-rg'
-
-  #   runs-on: ubuntu-latest
-    
-  #   outputs:
-  #     webAppName: ${{ steps.armDeployment.outputs.webAppName }}
-  #     webAppUrl: ${{ steps.armDeployment.outputs.url }}      
-
-  #   steps:      
-  #     - uses: actions/checkout@v2
-
-  #     - name: Azure Login
-  #       uses: Azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-  #     - name: Create Resource Group
-  #       run: |
-  #         az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
-                          
-  #     - name: Deploy Azure Resource Manager (ARM) Template
-  #       id: armDeployment
-  #       uses: Azure/arm-deploy@v1
-  #       with:
-  #         subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-  #         resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-  #         template: ./weatherApi/infra/infra.json
-  #         parameters: location=${{ env.LOCATION}}
-  
-  # create-azure-resource-prod:
-  #   runs-on: ubuntu-latest
-    
-  #   env:
-  #     RESOURCE_GROUP_NAME: 'apim-weather-prod-rg'
-
-  #   outputs:
-  #     webAppName: ${{ steps.armDeployment.outputs.webAppName }}
-  #     webAppUrl: ${{ steps.armDeployment.outputs.url }}      
-
-  #   steps:      
-  #     - uses: actions/checkout@v2
-
-  #     - name: Azure Login
-  #       uses: Azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
-          
-  #     - name: Create Resource Group
-  #       run: |
-  #         az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
-                          
-  #     - name: Deploy Azure Resource Manager (ARM) Template
-  #       id: armDeployment
-  #       uses: Azure/arm-deploy@v1
-  #       with:
-  #         subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-  #         resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-  #         template: ./weatherApi/infra/infra.json
-  #         parameters: location=${{ env.LOCATION}}
-
   build-api:        
     runs-on: ubuntu-latest
     
@@ -83,7 +20,7 @@ jobs:
       - name: Setup Dotnet 3.3.x
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.x'
+          dotnet-version: '7.x'
 
       - name: dotnet build and publish
         working-directory: ./weatherApi/src
