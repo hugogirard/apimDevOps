@@ -1,7 +1,7 @@
 param ApimServiceName string
 param environmentValue string
 
-resource ApimServiceName_Environment 'Microsoft.ApiManagement/service/namedValues@2021-01-01-preview' = {
+resource namedValues 'Microsoft.ApiManagement/service/namedValues@2021-01-01-preview' = {
   properties: {
     tags: []
     secret: false

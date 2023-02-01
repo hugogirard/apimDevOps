@@ -3,7 +3,7 @@ param location string
 param publisherEmail string
 param publisherName string
 
-resource apimName_resource 'Microsoft.ApiManagement/service@2020-06-01-preview' = {
+resource apim 'Microsoft.ApiManagement/service@2020-06-01-preview' = {
   name: apimName
   location: location
   sku: {

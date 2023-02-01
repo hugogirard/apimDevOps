@@ -25,9 +25,9 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module apimTemplate 'apim.template.bicep' = {
+module apim 'apim.template.bicep' = {
   scope: resourceGroup(rg.name)
-  name: 'apimTemplate'  
+  name: 'apim'  
   params: {
     apimName: apimName
     location: location
@@ -36,39 +36,39 @@ module apimTemplate 'apim.template.bicep' = {
   }
 }
 
-module productTemplate 'apim.products.bicep' = {
+module products 'apim.products.bicep' = {
   scope: resourceGroup(rg.name)
-  name: 'productTemplate'
+  name: 'products'
   params: {
     ApimServiceName: apimName
   }
   dependsOn: [
-    apimTemplate
+    apim
   ]
 }
 
-module namedValueTemplate 'namedValues.template.bicep' = {
+module namedValue 'namedValues.template.bicep' = {
   scope: resourceGroup(rg.name)
-  name: 'namedValueTemplate'
+  name: 'namedValue'
   params: {
     ApimServiceName: apimName
     environmentValue: environmentValue
   }
   dependsOn: [
-    apimTemplate
+    apim
   ]
 }
 
-module globalPolicyTemplate 'policy/global.policy.bicep' = {
+module globalPolicy 'policy/global.policy.bicep' = {
   scope: resourceGroup(rg.name)
-  name: 'globalPolicyTemplate'
+  name: 'globalPolicy'
   params: {
     ApimServiceName: apimName
     BaseUrl: repoBaseUrl
   }
   dependsOn: [
-    apimTemplate
-    namedValueTemplate
+    apim
+    namedValue
   ]
 }
 

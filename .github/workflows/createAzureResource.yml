@@ -69,7 +69,7 @@ jobs:
           scope: subscription      
           region: ${{ env.LOCATION }}
           template: ./opsTeam/master.json
-          parameters: environmentValue=prod rgName=${{ env.RESOURCE_GROUP_NAME }} apimName=${{ env.APIM_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}      
+          parameters: environmentValue=prod rgName=${{ env.RESOURCE_GROUP_NAME }} repoBaseUrl=${{ env.BASE_REPO_URL }}  location=${{ env.LOCATION}} publisherEmail=${{ secrets.PUPLISHER_EMAIL }} publisherName=${{ secrets.PUBLISHER_NAME }}      
 
       - uses: gliech/create-github-secret-action@v1
         with:
