@@ -8,7 +8,7 @@ resource apimName_resource 'Microsoft.ApiManagement/service@2020-06-01-preview' 
   location: location
   sku: {
     name: 'Developer'
-    capacity: '1'
+    capacity: 1
   }
   properties: {
     publisherEmail: publisherEmail
