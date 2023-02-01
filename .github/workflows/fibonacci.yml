@@ -66,13 +66,13 @@ jobs:
         with: 
           app-name: ${{ secrets.WEBAPP_FIBONACCI_NAME_DEV }}
       
-      # - name: Deploy API in APIM        
-      #   uses: Azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
-      #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-      #     template: ./fibonacciApi/template/api.json
-      #     parameters: WebUrl=${{ secrets.WEBAPP_FIBONACCI_URL_DEV }} ApimServiceName=${{ env.APIM_NAME}}                    
+      - name: Deploy API in APIM        
+        uses: Azure/arm-deploy@v1
+        with:
+          subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+          template: ./fibonacciApi/template/api.bicep
+          parameters: WebUrl=${{ secrets.WEBAPP_FIBONACCI_URL_DEV }} ApimServiceName=${{ env.APIM_NAME}}                    
 
   deploy-prod:        
     needs:             

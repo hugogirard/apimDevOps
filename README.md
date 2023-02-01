@@ -86,3 +86,5 @@ Next you can deploy the APIs running **Deploy Fibonnaci API** and **Deploy Weath
 If you refer to our provided toolkit (first link in the README), you have a tool call the extractor.  This help you to extract the ARM template for all your APIM or only one specific API.  Is recommended to use this at the beginning but when you are familiar with the ARM template you shouldn't need to extrator anymore.  
 
 Once you even gain more maturity I will recommend using a better tooling like [Bicep](https://github.com/Azure/bicep).
+
+https://techcommunity.microsoft.com/t5/azure-developer-community-blog/automate-your-api-deployments-with-azure-api-management-and/ba-p/3682278
