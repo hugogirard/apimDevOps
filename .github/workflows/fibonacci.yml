@@ -110,5 +110,5 @@ jobs:
         with:
           subscriptionId: ${{ secrets.SUBSCRIPTION_ID }}
           resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-          template: ./fibonacciApi/template/api.json
+          template: ./fibonacciApi/template/api.bicep
           parameters: WebUrl=${{ secrets.WEBAPP_FIBONACCI_URL_PROD }} ApimServiceName=${{ env.APIM_NAME}}               
