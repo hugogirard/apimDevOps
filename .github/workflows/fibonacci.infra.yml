@@ -32,8 +32,7 @@ jobs:
 
       - name: Build bicep template
         run: |
-         bicep build infra.bicep 
-        working-directory: /fibonacciApi/infra                
+         bicep build ./fibonacciApi/infra/infra.bicep         
                           
       - name: Deploy Azure Resource Manager (ARM) Template
         id: armDeployment
@@ -81,8 +80,7 @@ jobs:
 
       - name: Build bicep template
         run: |
-         bicep build infra.bicep 
-        working-directory: /fibonacciApi/infra   
+         bicep build ./fibonacciApi/infra/infra.bicep         
 
       - name: Deploy Azure Resource Manager (ARM) Template
         id: armDeployment
