@@ -42,7 +42,7 @@ jobs:
     environment: DEV
 
     env:
-      RESOURCE_GROUP_NAME: 'apim-core-rg'
+      RESOURCE_GROUP_NAME: 'rg-apim-bicep-dev'
       APIM_NAME: ${{ secrets.APIM_DEV_NAME }}
 
     runs-on: ubuntu-latest
@@ -80,7 +80,7 @@ jobs:
     environment: PROD
 
     env:
-      RESOURCE_GROUP_NAME: 'apim-core-rg'
+      RESOURCE_GROUP_NAME: 'rg-apim-bicep-prod'
       APIM_NAME: ${{ secrets.APIM_PROD_NAME }}
 
     runs-on: ubuntu-latest
