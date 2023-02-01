@@ -1,4 +1,4 @@
-name: Deploy Azure APIM
+name: Deploy Azure APIM (OpsTeam)
 
 on:  
   push:
