@@ -41,7 +41,7 @@ jobs:
       - build-api   
     
     env:
-      RESOURCE_GROUP_NAME: 'apim-core-rg'
+      RESOURCE_GROUP_NAME: 'rg-apim-bicep-dev'
       APIM_NAME: ${{ secrets.APIM_DEV_NAME }}
 
     environment: DEV
