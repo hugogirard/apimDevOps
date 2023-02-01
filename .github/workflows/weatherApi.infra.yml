@@ -29,7 +29,11 @@ jobs:
       - name: Create Resource Group
         run: |
           az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
-                          
+
+      - name: Build bicep template
+        run: |
+         bicep build ./weatherApi/infra/infra.bicep  
+
       - name: Deploy Azure Resource Manager (ARM) Template
         id: armDeployment
         uses: Azure/arm-deploy@v1
@@ -73,7 +77,11 @@ jobs:
       - name: Create Resource Group
         run: |
           az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
-                          
+
+      - name: Build bicep template
+        run: |
+         bicep build ./weatherApi/infra/infra.bicep  
+
       - name: Deploy Azure Resource Manager (ARM) Template
         id: armDeployment
         uses: Azure/arm-deploy@v1
