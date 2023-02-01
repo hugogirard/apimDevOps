@@ -29,6 +29,11 @@ jobs:
       - name: Create Resource Group
         run: |
           az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
+
+      - name: Build bicep template
+        run: |
+         bicep build infra.bicep 
+        working-directory: /fibonacciApi/infra                
                           
       - name: Deploy Azure Resource Manager (ARM) Template
         id: armDeployment
@@ -73,7 +78,12 @@ jobs:
       - name: Create Resource Group
         run: |
           az group create -n ${{ env.RESOURCE_GROUP_NAME }} -l ${{ env.LOCATION }}
-                          
+
+      - name: Build bicep template
+        run: |
+         bicep build infra.bicep 
+        working-directory: /fibonacciApi/infra   
+
       - name: Deploy Azure Resource Manager (ARM) Template
         id: armDeployment
         uses: Azure/arm-deploy@v1
