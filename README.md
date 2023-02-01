@@ -1,10 +1,10 @@
 # APIM DevOps
 
-This github provide an example how to do DevOps with Github for Azure API Management.  
+This github provides an example how to do DevOps with Github for Azure API Management.  
 
-Keep in mind, their is none one solution only to achieve this, this is one example using Bicep.  The same can be accomplished with Terraform or other Open Source tools provided by Microsoft.
+Keep in mind, there is none one solution only to achieve this, this is one example using Bicep.  The same can be accomplished with Terraform or other Open Source tools provided by Microsoft.
 
-DevOps can be done in multiple way, Microsoft provides some recommendation [here](https://learn.microsoft.com/en-us/azure/api-management/devops-api-development-templates).
+DevOps can be done in multiple ways, Microsoft provides some recommendation [here](https://learn.microsoft.com/en-us/azure/api-management/devops-api-development-templates).
 
 The proper flow of API in a DevOps world will be this one below.
 
@@ -29,9 +29,9 @@ This can include all the shared configuration in the organization for APIM like:
   <li>Global Policy</li>
 </ul>
 
-Each teams that develop APIs will have their own dedicated Git repository.  Doing so, they can only modify their own set of APIs and be independant of other teams.
+Each team that develop APIs will have their own dedicated Git repository.  Doing so, they can only modify their own set of APIs and be independent of other teams.
 
-This Git repository represent this kind of structure.  We use folder in this case (in real world scenario you will have multiple Git). In this case we have 3 folder:
+This Git repository represents this kind of structure.  We use folder in this case (in real world scenario you will have multiple Git). In this case we have 3 folder:
 
 <ul>
   <li>opsTeam (Ops Cloud Team)</li>
@@ -39,13 +39,13 @@ This Git repository represent this kind of structure.  We use folder in this cas
   <li>weatherApi (The dev team of the weather API) </li>
 </ul>
 
-Those 3 folders represent like 3 differents git repository.
+Those 3 folders represent like 3 different git repository.
 
 <img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/folder.png?raw=true' />
 
 Folder|Description
 --- | --- |
-.github/workflows | Contains all pipeline associate to each folder.
+.github/workflows | Contains all pipeline associates to each folder.
 opsTeam | Contains the core ARM template and shared configuration for all APIM in the organization
 fiboncciApi | Contains the source code of the Fibonacci API and the ARM template to configure the API in APIM.
 weatherApi | Contains the source of the Weather API and the ARM template to configure the API in APIM.
@@ -60,14 +60,14 @@ You have 6 pipelines.
 
 Github Action | Description
 --- | --- |
-Deploy Azure APIM Core | This pipeline deploy all APIMS with global settings.  Should be managed by the OpsTeam.
-Deploy Infra Fibonacci API | This pipeline deploy the infra (web app) for the Fibonacci API
-Deploy Fibonacci API | This pipeline deploy the Fibonnaci API in Azure and configure it in APIM
-Deploy Infra Weather API | This pipeline deploy the infra (web app) for the Weather API
-Deploy Weather API | This pipelie deploy the Weather API in Azure and Configure it in APIM.
-Destroy Azure Resources | This pipeline destroy all the resources created in this demo in Azure
+Deploy Azure APIM Core | This pipeline deploys all APIMS with global settings.  Should be managed by the OpsTeam.
+Deploy Infra Fibonacci API | This pipeline deploys the infra (web app) for the Fibonacci API
+Deploy Fibonacci API | This pipeline deploys the Fibonnaci API in Azure and configure it in APIM
+Deploy Infra Weather API | This pipeline deploys the infra (web app) for the Weather API
+Deploy Weather API | This pipelie deploys the Weather API in Azure and Configure it in APIM.
+Destroy Azure Resources | This pipeline destroys all the resources created in this demo in Azure
 
-The Github **Deploy Azure APIM Core** contains two [environments](https://docs.github.com/en/actions/reference/environments), the production one requiered an approver.
+The Github **Deploy Azure APIM Core** contains two [environments](https://docs.github.com/en/actions/reference/environments), the production one required an approver.
 
 ## How to use this Github
 
@@ -84,8 +84,7 @@ PUPLISHER_EMAIL | The email of the publisher
 SUBSCRIPTION_ID | The subscription ID where is deployed all the Azure Resources
 PA_TOKEN | Needed to write Github Secrets after the infra pipeline is done executed.  For more information read https://github.com/gliech/create-github-secret-action#pa_token
 
-
-Be sure after to create two environment with those name
+Be sure after to create two environments with those names
 
 <img src='https://raw.githubusercontent.com/hugogirard/apimDevOps/main/images/env.png?raw=true' />
 
@@ -93,7 +92,7 @@ But an approver for the **PROD** environment.
 
 Now you can run the Deploy Azure APIM Core, will need to approve to create the resource in production.
 
-Once this is done run the Github Action **Deploy Infra Fibonacci API** and **Deploy Infra Weather API**.  Once this is done, all web apps for both environment will be created.
+Once this is done run the Github Action **Deploy Infra Fibonacci API** and **Deploy Infra Weather API**.  Once this is done, all web apps for both environments will be created.
 
 Next you can deploy the APIs running **Deploy Fibonnaci API** and **Deploy Weather API**.
 
